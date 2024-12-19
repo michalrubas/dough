@@ -1,0 +1,183 @@
+body {
+    background-color: #f8f9fa;
+}
+.form-container, .results-container {
+    max-width: 600px;
+    margin: auto;
+}
+.results-box {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+.results-box > div {
+    border: 1px solid #ddd;
+    padding: 10px 10px 10px 10px;
+    border-radius: 5px;
+    background: #fafafa;
+}
+.results-box strong {
+    display: block;
+    /* margin-bottom: 5px; */
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.language-switcher {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    padding: 10px;
+}
+
+.language-switcher img {
+    width: 35px;
+    height: auto;
+}
+
+#instructionsWrapper, #finalInstructionsWrapper  {
+    margin-top: 0 !important;
+    gap: 0;
+    background: #ffffdc;
+}
+
+#toggleInstructionsWrapper, #toggleFinalInstructionsWrapper {
+    margin-top: 0 !important;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.instructions-box, .final-instructions-box {
+    margin-top: 0 !important;
+    padding: 15px;
+    /* background-color: #eef5ff; */
+    /* border: 1px solid #007bff; */
+    border-radius: 5px;
+}
+
+#instructionsBox , #finalInstructionsBox {
+    overflow: hidden; 
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 0.7s ease, opacity 0.7s ease;
+    padding: 0px 15px 0px 15px;
+}
+#instructionsBox.hidden, #finalInstructionsBox.hidden {
+    max-height: 0; /* Skrytí obsahu (výška 0) */
+    opacity: 0; /* Prùhlednost */
+    padding: 0px 15px 0px 15px;
+}
+
+.results-box {
+    display: flex; /* Použití flexboxu */
+    justify-content: space-between; /* Rovnomìrné rozmístìní boxù */
+    gap: 10px; /* Mezera mezi boxy */
+    padding: 10px 0; /* Vertikální mezera kolem boxù */
+    flex-wrap: nowrap; /* Zabrání zalomení na další øádek */
+}
+
+.mini-box-total {
+    flex: 1; /* Rovnomìrné pøizpùsobení velikosti boxù */
+    max-width: 150px; /* Maximální šíøka boxu */
+    /* border: 1px solid #ddd; */
+    padding: 5px;
+    border-radius: 5px;
+    background: #ffffff;
+    text-align: center;
+    box-sizing: border-box; /* Zahrnutí paddingu do velikosti boxu */
+    font-size: 1rem; /* Výchozí velikost písma */
+}
+
+.mini-box-total p {
+    margin: 0; /* Odstraneni implicitniho marginu */
+    padding: 0; /* Odstraneni paddingu */
+}
+
+/* Media query pro menší obrazovky */
+@media (max-width: 576px) {
+    .mini-box-total {
+        max-width: 100px; /* Zmenšení maximální šíøky boxu */
+        padding: 5px; /* Menší padding pro boxy */
+        font-size: 0.8rem; /* Menší velikost textu */
+    }
+}
+
+.mini-box-poolish {
+    display: flex; /* Aktivace flexboxu */
+    align-items: center; /* Vertikální zarovnání na støed */
+    justify-content: space-between; /* Minimální mezera mezi prvky */
+    padding: 5px 10px; /* Pøidání trochu vnitøní mezery */
+    border: 1px solid #ddd; /* Ohranièení */
+    border-radius: 5px; /* Zaoblené rohy */
+    background: #ffffff; /* Jemnì odlišný podklad */
+    box-sizing: border-box; /* Zahrnutí paddingu do velikosti */
+    font-size: 1rem; /* Standardní velikost textu */
+    gap: 5px; /* Malý prostor mezi prvky */
+}
+
+.mini-box-poolish strong {
+    margin-right: 0px;
+    flex: 0 0 auto; /* Zachování šíøky podle obsahu */
+    text-align: left; /* Zarovnání vlevo */
+}
+
+.mini-box-poolish span {
+    flex: 0 0 auto; /* Zachování šíøky podle obsahu */
+    text-align: right; /* Zarovnání množství vpravo */
+}
+
+/* Tooltip */
+.info-word {
+    position: relative;
+    cursor: pointer;
+    color: #000000;
+    text-decoration: underline dotted;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.info-word:hover, .info-word.active {
+    background-color: #f0f8ff; /* Svìtle modré pozadí */
+    color: #0056b3; /* Tmavší text */
+    border-radius: 3px; /* Zaoblené okraje pro efekt */
+}
+
+.info-word:hover::after, .info-word.active::after {
+    content: attr(data-info);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 10;
+    font-size: 0.9rem;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.info-word::after {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.info-word.active::after {
+    opacity: 1;
+}
+
+body.touch-device .info-word {
+    text-decoration: none; /* Odstranìní podtržení na dotykových zaøízeních */
+    background-color: #f9f9f9; /* Mírnì odlišné pozadí */
+}
+
+body.touch-device .info-word.active {
+    background-color: #f0f8ff;
+    text-decoration: underline dotted;
+}
