@@ -52,6 +52,10 @@ body {
     padding: 0;
 }
 
+#toggleInstructions, #toggleFinalInstructions{
+    color: #ababab;
+}
+
 .instructions-box, .final-instructions-box {
     margin-top: 0 !important;
     padding: 15px;
@@ -181,3 +185,80 @@ body.touch-device .info-word.active {
     background-color: #f0f8ff;
     text-decoration: underline dotted;
 }
+
+/* Obalovací prvek pro posuvník */
+.range-wrapper {
+    position: relative;
+    width: 100%;
+    height: 40px; /* Vyšší kvùli èárkám */
+    display: flex;
+    align-items: center;
+}
+
+.range-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px; /* Tlouška èáry */
+    background-color: #ddd; /* Barva èáry */
+    z-index: 1;
+    transform: translateY(-50%);
+}
+
+/* Èárky */
+.range-wrapper .ticks {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.range-wrapper .ticks span {
+    position: relative;
+    height: 15px; /* Vıška èárek */
+    width: 2px; /* Šíøka èárek */
+    background-color: #aaa; /* Barva èárek */
+}
+
+/* Posuvník */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: none; /* Zrušení vıchozího pozadí */
+    position: relative;
+    z-index: 3; /* Posuvník nad èárkami */
+    outline: none;
+    height: 20px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: url('../img/drop.png') no-repeat center center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    z-index: 4;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: url('../img/drop.png') no-repeat center center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    z-index: 4;
+}
+
+
+
