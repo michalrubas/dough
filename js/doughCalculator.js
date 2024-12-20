@@ -37,7 +37,7 @@ function calculateDough() {
     <div>
         <strong>${getTranslation('totalIngredients')}</strong>
         <div class="d-flex flex-wrap justify-content-around gap-3 p-3 bg-light">
-            <div class=mini-box-total text-center">
+            <div class="mini-box-total text-center">
                 <strong>${getTranslation('flour')}</strong>
                 <p>${Math.round(totalFlour)}g</p>
             </div>
@@ -89,7 +89,10 @@ function calculateDough() {
         `;
     }
     //POOLISH INSTRUCTIONS
-    function generatePoolishInstructions() {
+    function generatePoolishInstructions(poolishWater, poolishFlour) {
+        //getDynamicValues(water = null, flour = null, honey = null, yeast = null, salt = null, currentLanguage)
+        const dynamicValues = getDynamicValues(poolishWater, poolishFlour, honey, yeast, null, currentLanguage);
+
         return `
             <div id="instructionsWrapper">
                 <div id="toggleInstructionsWrapper" class="d-flex justify-content-end mt-2">   
@@ -100,9 +103,9 @@ function calculateDough() {
                 <div id="instructionsBox" class="instructions-box">
                     <h5>${getTranslation('instructions')}</h5>
                     <ul style="list-style-type: disc; padding-left: 20px;">
-                        ${generateStepWithTooltips('step1', 'step1_tooltips')}
-                        <li>${getTranslation('step2')}</li>
-                        <li>${getTranslation('step3')}</li>
+                        ${generateDynamicStepWithTooltips('step1',dynamicValues, 'step1_tooltips')}
+                        ${generateDynamicStepWithTooltips('step2',dynamicValues, 'step2_tooltips')}
+                        ${generateDynamicStepWithTooltips('step3',dynamicValues, 'step3_tooltips')}
                     </ul>
                 </div>
             </div>
@@ -118,7 +121,7 @@ function calculateDough() {
         </div>
     `;
 
-    function generatefinalmixBox(finalFlour, finalWater, totalSalt) {
+    function generatefinalmixBox(finalFlour, finalWater, totalSalt) {  
         return `
             <div class="d-flex flex-wrap justify-content-around gap-3 p-3 bg-light">
                 <div class="mini-box-poolish text-center">
@@ -136,6 +139,9 @@ function calculateDough() {
 
     //FINAL INSTRUCTIONS
     function generateFinalMixInstructions() {
+        //getDynamicValues(water = null, flour = null, honey = null, yeast = null, salt = null, currentLanguage)
+        const dynamicValues = getDynamicValues(finalWater, finalFlour, null, null,totalSalt, currentLanguage);
+
         return `
             <div id="finalInstructionsWrapper">
                 <div id="toggleFinalInstructionsWrapper" class="d-flex justify-content-end mt-2">   
@@ -146,10 +152,10 @@ function calculateDough() {
                 <div id="finalInstructionsBox" class="final-instructions-box">
                     <h5>${getTranslation('finalInstructions')}</h5>
                     <ul style="list-style-type: disc; padding-left: 20px;">
-                        ${generateStepWithTooltips('finalMixStep1', 'finalMixStep1_tooltips')}
-                        ${generateStepWithTooltips('finalMixStep2', 'finalMixStep2_tooltips')}
-                        ${generateStepWithTooltips('finalMixStep3', 'finalMixStep3_tooltips')}
-                        ${generateStepWithTooltips('finalMixStep4', 'finalMixStep4_tooltips')}
+                        ${generateDynamicStepWithTooltips('finalMixStep1',dynamicValues, 'finalStep1_tooltips')}
+                        ${generateDynamicStepWithTooltips('finalMixStep2',dynamicValues, 'finalStep2_tooltips')}
+                        ${generateDynamicStepWithTooltips('finalMixStep3',dynamicValues, 'finalStep3_tooltips')}
+                        ${generateDynamicStepWithTooltips('finalMixStep4',dynamicValues, 'finalStep4_tooltips')}
                     </ul>
                 </div>
             </div>
@@ -157,26 +163,44 @@ function calculateDough() {
     }
     
     document.getElementById("results").innerHTML = `
-        ${totalBox}
-        ${poolishBox}
-        ${generatePoolishInstructions()}
-        ${finalmixBox}
-        ${generateFinalMixInstructions()}
-    `;
-}
-
-function generateStepWithTooltips(stepKey, tooltipsKey) {
-    const stepText = translations[currentLanguage][stepKey] || "";
-    const tooltips = translations[currentLanguage][tooltipsKey] || {};
-
-    let stepHTML = stepText;
-    for (const [word, tooltip] of Object.entries(tooltips)) {
-        const tooltipHTML = `<span class="info-word" data-info="${tooltip}">${word}</span>`;
-        const regex = new RegExp(`\\b${word}\\b`, 'g');
-        stepHTML = stepHTML.replace(regex, tooltipHTML);
+            ${totalBox}
+            ${poolishBox}
+            ${generatePoolishInstructions(poolishWater, poolishFlour)}
+            ${finalmixBox}
+            ${generateFinalMixInstructions()}
+        `;
     }
 
-    return `<li>${stepHTML}</li>`;
+// function generateStepWithTooltips(stepKey, tooltipsKey) {
+//     const stepText = translations[currentLanguage][stepKey] || "";
+//     const tooltips = translations[currentLanguage][tooltipsKey] || {};
+
+//     let stepHTML = stepText;
+//     for (const [word, tooltip] of Object.entries(tooltips)) {
+//         const tooltipHTML = `<span class="info-word" data-info="${tooltip}">${word}</span>`;
+//         const regex = new RegExp(`\\b${word}\\b`, 'g');
+//         stepHTML = stepHTML.replace(regex, tooltipHTML);
+//     }
+
+//     return `<li>${stepHTML}</li>`;
+// }
+
+function generateDynamicStepWithTooltips(stepKey, dynamicValues = {}, tooltipsKey) {
+    let stepTemplate = translations[currentLanguage][stepKey] || "";
+    const tooltips = translations[currentLanguage][tooltipsKey] || {};
+
+    Object.keys(dynamicValues).forEach(key => {
+        const value = dynamicValues[key] || "";
+        const tooltip = tooltips[key];
+        const replacement = tooltip
+            ? `<span class="info-word" data-info="${tooltip}">${value}</span>`
+            : value;
+
+        const placeholder = `{${key}}`;
+        stepTemplate = stepTemplate.replace(placeholder, replacement);
+    });
+
+    return `<li>${stepTemplate}</li>`;
 }
 
 // Funkce pro vypocet casu startu Poolish
