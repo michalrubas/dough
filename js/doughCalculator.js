@@ -117,7 +117,7 @@ function calculateDough() {
         <div>
             <strong>${getTranslation('finalMix')}</strong>
             <small class="text-muted"><i class="bi bi-clock"></i> ${getTranslation('recommendedStart')}: ${finalMixTimeRange}</small><br>
-            ${generatefinalmixBox(poolishFlour, poolishWater, yeast, honey)}
+            ${generatefinalmixBox(finalFlour, finalWater, yeast, honey)}
         </div>
     `;
 
